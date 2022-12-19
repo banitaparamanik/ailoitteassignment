@@ -1,23 +1,30 @@
 import 'dart:convert';
 
+import 'package:ailoitteassignment/core/error/exceptions.dart';
+import 'package:ailoitteassignment/features/drink_listing/data/datasources/get_drinks_remote_data.dart';
 import 'package:dio/dio.dart';
 
-class NetworkManager {
-  Future<dynamic> get(String url) async {
+class NetworkManager extends GetDrinkRemoteData {
+  @override
+  Future<dynamic> get(String apiPath) async {
     try {
-      final response = await Dio().get(url);
+      final response = await Dio().get(apiPath);
 
-      final responseJson = _response(response);
+      final responseJson = getResponse(response);
       return responseJson;
-    } catch (_) {}
+    } catch (_) {
+      // return CacheFailure();
+    }
   }
 
-  dynamic _response(Response response) {
+  @override
+  dynamic getResponse(Response response) {
     switch (response.statusCode) {
       case 200:
         return response.data;
       default:
-        throw Exception();
+        throw ServerException();
     }
   }
+
 }
