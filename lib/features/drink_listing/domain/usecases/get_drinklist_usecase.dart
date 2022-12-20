@@ -1,11 +1,11 @@
 import 'package:ailoitteassignment/core/error/failures.dart';
 import 'package:ailoitteassignment/core/usecases/use_cases.dart';
+import 'package:ailoitteassignment/features/drink_listing/data/repositories/drink_repository.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
-import 'package:ailoitteassignment/features/drink_listing/domain/repositories/drinks_base_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class GetDrinkListUseCase implements UseCase<List<DrinkEntity>, String> {
-  final DrinksBaseRepository drinksRepository;
+  final DrinkRepository drinksRepository;
 
   GetDrinkListUseCase(this.drinksRepository);
   @override
