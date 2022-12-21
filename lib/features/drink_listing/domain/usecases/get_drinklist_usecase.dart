@@ -4,7 +4,7 @@ import 'package:ailoitteassignment/features/drink_listing/data/repositories/drin
 import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
 import 'package:dartz/dartz.dart';
 
-class GetDrinkListUseCase implements UseCase<List<DrinkEntity>, String> {
+class GetDrinkListUseCase implements UseCase<dynamic, String> {
   final DrinkRepository drinksRepository;
 
   GetDrinkListUseCase(this.drinksRepository);
@@ -12,6 +12,11 @@ class GetDrinkListUseCase implements UseCase<List<DrinkEntity>, String> {
   Future<Either<Failure, List<DrinkEntity>>> call(String params) async {
     return await drinksRepository.getDrinklist(params);
   }
+
+  // @override
+  // Future<Either<Failure, DrinkEntity>> callDrinkDetails(String idDrink) async {
+  //   return await drinksRepository.getDrinkItemDetails(idDrink);
+  // }
 }
 
 // class Params extends Equatable {

@@ -1,6 +1,7 @@
 import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
 import 'package:ailoitteassignment/features/drink_listing/presentation/views/drink_details_screen.dart';
 import 'package:ailoitteassignment/features/drink_listing/presentation/views/drink_list_screen.dart';
+import 'package:ailoitteassignment/features/drink_listing/presentation/views/favorite_drink_list.dart';
 import 'package:ailoitteassignment/utils/router/route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +18,11 @@ final GoRouter appRouter = GoRouter(initialLocation: RoutePaths.home, routes: [
       GoRoute(
           path: RoutePaths.details,
           builder: (BuildContext context, GoRouterState state) =>
-              DrinkDetailsScreen(drink: state.extra as DrinkEntity))
+              DrinkDetailsScreen(drink: state.extra as DrinkEntity)),
+      GoRoute(
+          path: RoutePaths.favoriteDrinkList,
+          builder: (BuildContext context, GoRouterState state) =>
+              FavoriteDrinkList(favDrinkList: state.extra as List<DrinkEntity>))
     ],
     builder: (BuildContext context, GoRouterState state) {
       return const DrinkListScreen();

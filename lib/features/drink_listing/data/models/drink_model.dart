@@ -5,7 +5,8 @@ part 'drink_model.g.dart';
 @JsonSerializable()
 class DrinkModel extends DrinkEntity {
   const DrinkModel(
-      {String? idDrink,
+      {bool favorite = false,
+      String? idDrink,
       String? strDrink,
       String? strDrinkAlternate,
       String? strTags,
@@ -58,6 +59,7 @@ class DrinkModel extends DrinkEntity {
       String? dateModified})
       : super(
             idDrink: idDrink,
+            favorite: favorite,
             strDrink: strDrink,
             strDrinkAlternate: strDrinkAlternate,
             strTags: strTags,

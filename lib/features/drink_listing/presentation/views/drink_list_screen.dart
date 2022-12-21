@@ -1,5 +1,6 @@
 import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
 import 'package:ailoitteassignment/features/drink_listing/presentation/bloc/drink_bloc.dart';
+import 'package:ailoitteassignment/features/drink_listing/presentation/views/favorite_drink_list.dart';
 import 'package:ailoitteassignment/utils/router/route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,33 @@ class DrinkListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Drinks"), centerTitle: true),
+      appBar: AppBar(
+        title: Container(
+            alignment: Alignment.centerLeft,
+            child: const Text(
+              "Drinks",
+            )),
+        actions: <Widget>[
+          BlocListener<DrinkBloc, DrinkState>(
+            listener: (context, state) {
+              if (state is GetFavListSuccess) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                context.push("/home/favoriteDrinkList",
+                    extra: state.drinkModel);
+              }
+            },
+            child: IconButton(
+              icon: const Icon(
+                Icons.favorite_sharp,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                BlocProvider.of<DrinkBloc>(context).add(GetFavList());
+              },
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
@@ -32,7 +59,10 @@ class DrinkListScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(child: BlocBuilder<DrinkBloc, DrinkState>(
+            Expanded(
+                child: BlocBuilder<DrinkBloc, DrinkState>(
+              buildWhen: (previous, current) =>
+                  current is DrinkListSuccess || current is DrinkListLoading,
               builder: (context, state) {
                 if (state is DrinkListSuccess) {
                   return ListView.builder(

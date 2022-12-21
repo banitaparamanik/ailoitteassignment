@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class DrinkEntity extends Equatable {
+  final bool favorite;
   final String? idDrink;
   final String? strDrink;
   final String? strDrinkAlternate;
@@ -56,6 +57,7 @@ class DrinkEntity extends Equatable {
   const DrinkEntity(
       {this.idDrink,
       this.strDrink,
+      this.favorite = false,
       this.strDrinkAlternate,
       this.strTags,
       this.strVideo,

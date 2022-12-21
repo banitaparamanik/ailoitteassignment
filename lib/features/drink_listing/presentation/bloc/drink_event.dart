@@ -9,3 +9,11 @@ class GetDrinksListEvent extends DrinkEvent {
   GetDrinksListEvent(this.searchText);
 }
 
+class GetDrinkItemDetailEvent extends DrinkEvent {
+  final String drinkId;
+
+  GetDrinkItemDetailEvent(this.drinkId);
+}
+
+class GetFavList extends DrinkEvent {}
+

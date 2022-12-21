@@ -1,10 +1,25 @@
 import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
+import 'package:ailoitteassignment/features/drink_listing/presentation/bloc/drink_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DrinkDetailsScreen extends StatelessWidget {
+class DrinkDetailsScreen extends StatefulWidget {
   const DrinkDetailsScreen({required this.drink, super.key});
 
   final DrinkEntity drink;
+
+  @override
+  State<DrinkDetailsScreen> createState() => _DrinkDetailsScreenState();
+}
+
+class _DrinkDetailsScreenState extends State<DrinkDetailsScreen> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    isFavorite = widget.drink.favorite;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +33,24 @@ class DrinkDetailsScreen extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15))),
         shadowColor: Colors.green[100],
         child: ListTile(
-          leading: const Icon(Icons.album, color: Colors.cyan, size: 45),
-          title: Text("${drink.strDrink}"),
+          leading: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isFavorite = !isFavorite;
+                });
+                BlocProvider.of<DrinkBloc>(context)
+                    .add(GetDrinkItemDetailEvent(widget.drink.idDrink ?? ""));
+              },
+              child: Icon(isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.red, size: 45)),
+          title: Text("${widget.drink.strDrink}"),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("${drink.strCategory}"),
-              Text("${drink.strInstructions}"),
+              Text("${widget.drink.strCategory}"),
+              Text("${widget.drink.strInstructions}"),
             ],
           ),
         ),

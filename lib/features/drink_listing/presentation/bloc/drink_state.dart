@@ -11,7 +11,23 @@ class DrinkListSuccess extends DrinkState {
   final List<DrinkEntity> drinkModel;
 
   DrinkListSuccess(this.drinkModel);
-  
+}
+
+class DrinkDetailSuccess extends DrinkState {
+  final DrinkEntity drinkModel;
+
+  DrinkDetailSuccess(this.drinkModel);
 }
 
 class DrinkListFailure extends DrinkState {}
+
+class GetFavListLoading extends DrinkState {}
+
+class GetFavListSuccess extends DrinkState {
+   final List<DrinkEntity> drinkModel;
+
+
+  GetFavListSuccess(this.drinkModel);
+}
+
+class GetFavListFailure extends DrinkState {}
