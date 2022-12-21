@@ -1,14 +1,25 @@
-import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
+import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_fav_list_count_usecase.dart';
 import 'package:ailoitteassignment/features/drink_listing/presentation/bloc/drink_bloc.dart';
-import 'package:ailoitteassignment/features/drink_listing/presentation/views/favorite_drink_list.dart';
-import 'package:ailoitteassignment/utils/router/route_paths.dart';
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class DrinkListScreen extends StatelessWidget {
+class DrinkListScreen extends StatefulWidget {
   const DrinkListScreen({super.key});
+
+  @override
+  State<DrinkListScreen> createState() => _DrinkListScreenState();
+}
+
+class _DrinkListScreenState extends State<DrinkListScreen> {
   // final List<DrinkEntity> drinkList;
+  @override
+  void initState() {
+    BlocProvider.of<DrinkBloc>(context).add(GetFavListCountEvent());
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +31,42 @@ class DrinkListScreen extends StatelessWidget {
               "Drinks",
             )),
         actions: <Widget>[
-          BlocListener<DrinkBloc, DrinkState>(
+          BlocConsumer<DrinkBloc, DrinkState>(
+            listenWhen: (oldState, newState) => newState is GetFavListSuccess,
+            listener: (context, state) {
+              if (state is GetFavListSuccess) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                context.push("/home/favoriteDrinkList",
+                    extra: state.drinkModel);
+              }
+            },
+            buildWhen: (oldState, newState) =>
+                newState is GetFavListCountSuccess,
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.only(right:20),
+                child: IconButton(
+                  icon: Badge(
+                    badgeContent: state is GetFavListCountSuccess
+                        ? Text("${state.dbDrinkModel.length.toInt()}",style: const TextStyle(color: Colors.white),)
+                        : const Text(""),
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Icon(
+                        Icons.favorite_sharp,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    BlocProvider.of<DrinkBloc>(context).add(GetFavListEvent());
+                  },
+                ),
+              );
+            },
+          )
+
+          /*   BlocListener<DrinkBloc, DrinkState>(
             listener: (context, state) {
               if (state is GetFavListSuccess) {
                 FocusManager.instance.primaryFocus?.unfocus();
@@ -29,15 +75,18 @@ class DrinkListScreen extends StatelessWidget {
               }
             },
             child: IconButton(
-              icon: const Icon(
-                Icons.favorite_sharp,
-                color: Colors.red,
+              icon: Badge(
+                badgeContent: Text("3"),
+                child: const Icon(
+                  Icons.favorite_sharp,
+                  color: Colors.red,
+                ),
               ),
               onPressed: () {
-                BlocProvider.of<DrinkBloc>(context).add(GetFavList());
+                BlocProvider.of<DrinkBloc>(context).add(GetFavListEvent());
               },
             ),
-          ),
+          ), */
         ],
       ),
       body: Padding(

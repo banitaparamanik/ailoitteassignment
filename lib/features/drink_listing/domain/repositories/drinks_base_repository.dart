@@ -6,4 +6,5 @@ abstract class DrinksBaseRepository {
   Future<Either<Failure, List<DrinkEntity>>> getDrinklist(String searchText);
   Future<Either<Failure, Map<String, dynamic>>> getDrinkById(String idDrink);
   Future<Either<Failure, List<DrinkEntity>>> getFavList();
+  Future<Either<Failure, List<DrinkEntity>>> getFavListCount();
 }

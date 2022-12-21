@@ -4,6 +4,7 @@ import 'package:ailoitteassignment/core/usecases/use_cases.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/entities/drink_entity.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_drink_by_id_usecase.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_drinklist_usecase.dart';
+import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_fav_list_count_usecase.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_fav_list_usecase.dart';
 import 'package:ailoitteassignment/utils/database_helper.dart';
 import 'package:flutter/foundation.dart';
@@ -13,19 +14,19 @@ part 'drink_event.dart';
 part 'drink_state.dart';
 
 class DrinkBloc extends Bloc<DrinkEvent, DrinkState> {
-  DrinkBloc(this.getDrinkListUseCase, this.getDrinkByIdUseCase,this.getFavListUseCase)
+  DrinkBloc(this.getDrinkListUseCase, this.getDrinkByIdUseCase,
+      this.getFavListUseCase, this.getFavListCountUseCase)
       : super(DrinkInitial()) {
     on<GetDrinksListEvent>(_onGetDrinklistEvent);
     on<GetDrinkItemDetailEvent>(_onGetDrinkItemDetailEvent);
-    on<GetFavList>(_onGetFavList);
-
+    on<GetFavListEvent>(_onGetFavList);
+    on<GetFavListCountEvent>(_onGetFavListCount);
   }
 
   final GetDrinkListUseCase getDrinkListUseCase;
   final GetDrinkByIdUseCase getDrinkByIdUseCase;
   final GetFavListUseCase getFavListUseCase;
-  // final DeleteFavUseCase deleteFavUseCase;
-
+  final GetFavListCountUseCase getFavListCountUseCase;
 
   FutureOr<void> _onGetDrinklistEvent(
       GetDrinksListEvent event, Emitter<DrinkState> emit) async {
@@ -42,12 +43,19 @@ class DrinkBloc extends Bloc<DrinkEvent, DrinkState> {
     print(drinkDetailOrError);
   }
 
-  
   FutureOr<void> _onGetFavList(
-      GetFavList event, Emitter<DrinkState> emit) async {
+      GetFavListEvent event, Emitter<DrinkState> emit) async {
     emit(GetFavListLoading());
     final favListDrinkOrError = await getFavListUseCase(NoParams());
+
     emit(favListDrinkOrError.fold(
         (l) => GetFavListFailure(), (r) => GetFavListSuccess(r)));
+  }
+
+  FutureOr<void> _onGetFavListCount(
+      GetFavListCountEvent event, Emitter<DrinkState> emit) async {
+    final favListCountOrError = await getFavListCountUseCase(NoParams());
+    emit(favListCountOrError.fold(
+        (l) => GetFavListFailure(), (r) => GetFavListCountSuccess(r)));
   }
 }

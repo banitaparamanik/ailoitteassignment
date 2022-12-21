@@ -65,7 +65,7 @@ class DrinkRepository extends DrinksBaseRepository {
           "strCategory": data["strCategory"] ?? "",
           "strDrink": data["strDrink"] ?? "",
           "strInstructions": data["strInstructions"] ?? "",
-          "isFavorite": true
+          "isFavorite": 1
         });
         return Right(data);
       } else {
@@ -78,6 +78,20 @@ class DrinkRepository extends DrinksBaseRepository {
 
   @override
   Future<Either<Failure, List<DrinkEntity>>> getFavList() async {
+    try {
+      final favList =
+          await dataBaseHelper.fetchAll(tableName: DataBaseHelper.drinkTable);
+      List<DrinkModel> listDrink = List<DrinkModel>.from(favList.map((e) {
+        return DrinkModel.fromJson(e);
+      }));
+      return Right(listDrink);
+    } catch (_) {
+      throw Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<DrinkEntity>>> getFavListCount() async {
     try {
       final favList =
           await dataBaseHelper.fetchAll(tableName: DataBaseHelper.drinkTable);

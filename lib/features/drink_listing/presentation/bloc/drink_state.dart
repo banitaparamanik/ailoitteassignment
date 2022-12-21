@@ -24,10 +24,15 @@ class DrinkListFailure extends DrinkState {}
 class GetFavListLoading extends DrinkState {}
 
 class GetFavListSuccess extends DrinkState {
-   final List<DrinkEntity> drinkModel;
-
+  final List<DrinkEntity> drinkModel;
 
   GetFavListSuccess(this.drinkModel);
+}
+
+class GetFavListCountSuccess extends DrinkState {
+  final List<DrinkEntity> dbDrinkModel;
+
+  GetFavListCountSuccess(this.dbDrinkModel);
 }
 
 class GetFavListFailure extends DrinkState {}

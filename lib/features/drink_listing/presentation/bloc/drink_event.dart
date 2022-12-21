@@ -15,5 +15,8 @@ class GetDrinkItemDetailEvent extends DrinkEvent {
   GetDrinkItemDetailEvent(this.drinkId);
 }
 
-class GetFavList extends DrinkEvent {}
+class GetFavListEvent extends DrinkEvent {}
+
+class GetFavListCountEvent extends DrinkEvent {}
+
 

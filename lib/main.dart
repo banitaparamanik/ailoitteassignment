@@ -1,6 +1,7 @@
 import 'package:ailoitteassignment/features/drink_listing/data/repositories/drink_repository.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_drink_by_id_usecase.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_drinklist_usecase.dart';
+import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_fav_list_count_usecase.dart';
 import 'package:ailoitteassignment/features/drink_listing/domain/usecases/get_fav_list_usecase.dart';
 import 'package:ailoitteassignment/features/drink_listing/presentation/bloc/drink_bloc.dart';
 import 'package:ailoitteassignment/utils/database_helper.dart';
@@ -26,15 +27,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<DrinkBloc>(
       create: (context) {
-         final drinkRepo = DrinkRepository(NetworkManager(), DataBaseHelper());
+        final drinkRepo = DrinkRepository(NetworkManager(), DataBaseHelper());
         return DrinkBloc(
             GetDrinkListUseCase(drinkRepo),
             GetDrinkByIdUseCase(drinkRepo),
             GetFavListUseCase(drinkRepo),
-            // DeleteFavUseCase(drinkRepo)
-            );
+            GetFavListCountUseCase(drinkRepo));
       },
-          // DrinkBloc(GetDrinkListUseCase(DrinkRepository(NetworkManager()))),
+      // DrinkBloc(GetDrinkListUseCase(DrinkRepository(NetworkManager()))),
       child: MaterialApp.router(
         title: 'Drinks',
         theme: ThemeData(

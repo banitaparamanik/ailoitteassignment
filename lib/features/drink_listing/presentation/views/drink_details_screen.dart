@@ -17,7 +17,7 @@ class _DrinkDetailsScreenState extends State<DrinkDetailsScreen> {
 
   @override
   void initState() {
-    isFavorite = widget.drink.favorite;
+    isFavorite = widget.drink.isFavorite;
     super.initState();
   }
 

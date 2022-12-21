@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 class DrinkEntity extends Equatable {
-  final bool favorite;
+  @JsonKey(fromJson: boolFromInt, toJson: booltoInt)
+  final bool isFavorite;
   final String? idDrink;
   final String? strDrink;
   final String? strDrinkAlternate;
@@ -54,10 +56,14 @@ class DrinkEntity extends Equatable {
   final String? strCreativeCommonsConfirmed;
   final String? dateModified;
 
+  static bool boolFromInt(int isFavorite) => isFavorite == 1;
+
+  static int booltoInt(bool isFavorite) => isFavorite ? 1 : 0;
+
   const DrinkEntity(
       {this.idDrink,
       this.strDrink,
-      this.favorite = false,
+      this.isFavorite = false,
       this.strDrinkAlternate,
       this.strTags,
       this.strVideo,

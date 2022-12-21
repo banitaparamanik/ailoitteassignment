@@ -44,6 +44,7 @@ dependencies:
   json_annotation: ^4.7.0
   url_strategy: ^0.2.0
   sqflite: ^2.2.2
+  badges: ^2.0.3
 
 dev_dependencies:
   flutter_test:
